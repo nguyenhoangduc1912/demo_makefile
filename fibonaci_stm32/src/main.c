@@ -149,19 +149,23 @@ void led_off(unsigned char pin_number)
 	fibo[1] = 1;
 	fibo[2] = 1;
 	int number = 2; 
-	while(check_button == 0)
+	while(1)
 	{
-		fibo = (int *)realloc(fibo, (number + 1) * sizeof(int));
-		fibo[number + 1] = fibo[number] + fibo[number - 1];
-		for (int i = 0; i < fibo[number + 1]; i++)
+		if (check_button == 0 )
 		{
-			led_on(LD4_PIN);
-			delay(0x0f);
-			led_off(LD4_PIN);
-			delay(0x0f);
+			ibo = (int *)realloc(fibo, (number + 1) * sizeof(int));
+			fibo[number + 1] = fibo[number] + fibo[number - 1];
+			for (int i = 0; i < fibo[number + 1]; i++)
+			{
+				led_on(LD4_PIN);
+				delay(0x0f);
+				led_off(LD4_PIN);
+				delay(0x0f);
+			}
+			number++;
+			delay(0xff);
 		}
-		number++;
-		delay(0xff);
+		else break;
 	}
 	free(fibo);
 }*/ 
@@ -173,19 +177,22 @@ void fibonaci( int n)
 	fibo[0] = 0;
 	fibo[1] = 1;
 	int number = 1;	
-	while(n != 0)
+	while(1)
 	{
-		fibo[number + 1] = fibo[number] + fibo[number - 1];
-		for (int i = 0; i < fibo[number + 1]; i++)
+		if (check_button == 0 )
 		{
-			led_on(LD4_PIN);
-			delay(0x0f);
-			led_off(LD4_PIN);
-			delay(0x0f);
+			fibo[number + 1] = fibo[number] + fibo[number - 1];
+			for (int i = 0; i < fibo[number + 1]; i++)
+			{
+				led_on(LD4_PIN);
+				delay(0x0f);
+				led_off(LD4_PIN);
+				delay(0x0f);
+			}
+			number++;
+			delay(0xff);
 		}
-		number++;
-		delay(0xff);
-		n--;
+		else break;	
 	}
 
 }
@@ -197,7 +204,7 @@ void EXTI0_1_IRQHandler(void)
 	temp = read_reg(EXTI_PR, (1 << 0));
 	if (1 == temp)
 	{
-		fibonaci(0);
+		check_button = 1;
 	}
 	/* xoa co ngat */
 	temp = 1 << 0;
